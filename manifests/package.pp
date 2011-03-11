@@ -20,15 +20,4 @@ class foreman::package {
     notify => Service["foreman"],
   }
 
-  service {"foreman":
-    ensure => $using_passenger ? {
-      true => "stopped",
-      false => "running"
-    },
-    enable => $using_passenger ? {
-      true => "false",
-      false => "true",
-    },
-    hasstatus => true,
-  }
 }

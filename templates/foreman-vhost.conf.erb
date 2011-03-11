@@ -1,4 +1,6 @@
-<VirtualHost <%= ipaddress %>:80>
+Listen 3000
+
+<VirtualHost <%= ipaddress %>:3000>
   ServerName <%= fqdn %>
   ServerAlias foreman
   DocumentRoot <%= scope.lookupvar 'foreman::foreman_dir' %>/public
