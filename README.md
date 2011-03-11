@@ -1,8 +1,18 @@
 # Puppet module for managing Foreman
 
+
+Forked from Ohad , modified so it doesn't 
+block with an existing apache.
+
+Also look at https://github.com/KrisBuytaert/puppet-passenger
+
+
+Further : 
+
 Installs Foreman as a standalone application or using apache passenger.
 
-download the source code from <http://github.com/ohadlevy/puppet-foreman/tarball/master>
+
+
 
 # Requirements
 
