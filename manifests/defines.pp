@@ -15,15 +15,24 @@ define myline($file, $line, $ensure = 'present') {
     default : { err ( "unknown ensure value '${ensure}'" ) }
     present: {
       exec { "echo '${line}' >> '${file}'":
+        path   => ["/bin", "/sbin", "/usr/bin", "/usr/sbin"],
         unless => "grep -qFx '${line}' '${file}'",
-        user => root,
+        user   => root,
       }
     }
     absent: {
       exec { "perl -ni -e 'print unless /^\\Q${line}\\E\$/' '${file}'":
+        path   => ["/bin", "/sbin", "/usr/bin", "/usr/sbin"],
         onlyif => "grep -qFx '${line}' '${file}'",
-        user => root,
+        user   => root,
       }
     }
+  }
+}
+
+define link_file($source_path, $target_path) {
+  file{"$target_path/$name":
+    ensure => link,
+    target => "$source_path/$name"
   }
 }

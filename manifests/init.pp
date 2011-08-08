@@ -2,7 +2,8 @@ class foreman {
 
   # default variables 
   $using_store_configs = false # true or false
-  $using_passenger     = false  # true or false
+  $using_passenger     = true  # true or false
+  #$using_passenger     = false  # true or false
   $use_development     = true # used for initial download
 
   $railspath           = "/usr/share"
@@ -25,6 +26,7 @@ class foreman {
   }
 
   include foreman::import_facts
+  include foreman::import_hosts_and_facts
   include foreman::puppetca
   include foreman::puppetrun
   include foreman::tftp
@@ -32,13 +34,10 @@ class foreman {
   include foreman::externalnodes
 
   # Current package is available for Red Hat 5
-  if $lsbmajdistrelease == "5" and $lsbdistid != "Debian" {
+
     include foreman::package
     # passenger setup for Red Hat 5
     include foreman::passenger
-  } else {
-    include foreman::install_from_source
-  }
 
   file{$foreman_dir: 
     ensure => directory,
@@ -47,13 +46,20 @@ class foreman {
   }
 
   user { $foreman_user:
-    shell => "/sbin/nologin",
+    shell   => "/sbin/nologin",
     comment => "Foreman",
-    ensure => "present",
-    home => $foreman_dir,
+    ensure  => "present",
+    home    => $foreman_dir,
+    uid     => '1508',
+    gid     => "$foreman_user",
   }
-  
-  
+
+  group { $foreman_user:
+                ensure => present,
+                name   => "$foreman_user",
+                gid    => "1508";
+  }
+
   # cleans up the session entries in the database
   # if you are using fact or report importers, this creates a session per request
   # which can easily result with a lot of old and unrequired in your database

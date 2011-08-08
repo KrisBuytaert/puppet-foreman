@@ -19,13 +19,16 @@ Listen 3000
 
   # Use puppet certificates for SSL
 
-  SSLEngine On
-  SSLCertificateFile      /var/lib/puppet/ssl/certs/<%= fqdn %>.pem
-  SSLCertificateKeyFile   /var/lib/puppet/ssl/private_keys/<%= fqdn %>.pem
-  SSLCertificateChainFile /var/lib/puppet/ssl/certs/ca.pem
-  SSLCACertificateFile    /var/lib/puppet/ssl/certs/ca.pem
-  SSLVerifyClient         optional
-  SSLOptions              +StdEnvVars
-  SSLVerifyDepth          3
+  SSLEngine on
+    SSLCertificateFile      /var/lib/puppet-server/ssl/certs/puppet.pem
+    SSLCertificateKeyFile   /var/lib/puppet-server/ssl/private_keys/puppet.pem
+    SSLCertificateChainFile /var/lib/puppet-server/ssl/ca/ca_crt.pem
+    SSLCACertificateFile    /var/lib/puppet-server/ssl/ca/ca_crt.pem
+    # CRL checking should be enabled; if you have problems with Apache complaining about the CRL, disable the next line
+    SSLCARevocationFile     /var/lib/puppet-server/ssl/ca/ca_crl.pem
+    SSLVerifyClient optional
+    SSLVerifyDepth  1
+    SSLOptions +StdEnvVars
+
 
 </VirtualHost>
